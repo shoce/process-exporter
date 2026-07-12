@@ -1,4 +1,4 @@
-module github.com/ncabatoff/process-exporter
+module github.com/shoce/process-exporter
 
 go 1.23.0
 

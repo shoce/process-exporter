@@ -15,9 +15,9 @@ import (
 	"time"
 
 	"github.com/ncabatoff/fakescraper"
-	common "github.com/ncabatoff/process-exporter"
-	"github.com/ncabatoff/process-exporter/collector"
-	"github.com/ncabatoff/process-exporter/config"
+	common "github.com/shoce/process-exporter"
+	"github.com/shoce/process-exporter/collector"
+	"github.com/shoce/process-exporter/config"
 	"github.com/prometheus/client_golang/prometheus"
 	verCollector "github.com/prometheus/client_golang/prometheus/collectors/version"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
