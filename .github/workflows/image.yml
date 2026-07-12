@@ -55,7 +55,7 @@ jobs:
             type=ref,event=tag
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{env.VERSION}}
+            type=semver,pattern=${{env.VERSION}}
             type=sha
 
       - name: build docker image and, if not PR, push
@@ -66,7 +66,7 @@ jobs:
           context: .
           platforms: "linux/amd64,linux/arm64"
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{env.REGISTRY}}/${{github.repository}}:{{env.VERSION}}"
+          tags: "${{env.REGISTRY}}/${{github.repository}}:${{env.VERSION}}"
           
           
           labels: ${{ steps.meta.outputs.labels }}
