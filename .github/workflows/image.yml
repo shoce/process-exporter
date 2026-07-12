@@ -1,4 +1,6 @@
 
+name: "image"
+
 permissions:
   contents: "write"
   packages: "write"
