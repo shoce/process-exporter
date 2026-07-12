@@ -1,5 +1,5 @@
 
-name: "image"
+name: "docker-image"
 
 permissions:
   contents: "write"
@@ -8,44 +8,43 @@ permissions:
 
 on:
   push:
-    branches: [master]
-    tags: ['v*']
-  pull_request: 
+    branches:
+      - "master"
 
 env:
   REGISTRY: "ghcr.io"
 
 jobs:
   image:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-latest"
     steps:
     
       - uses: "shoce/action-version@v1"
           
-      - name: setup buildx
-        id: buildx
+      - name: "buildx setup"
+        id: "buildx"
         # https://github.com/docker/setup-buildx-action/
-        uses: docker/setup-buildx-action@v4
+        uses: "docker/setup-buildx-action@v4"
         with:
-          version: latest
+          version: "latest"
 
-      - name: login to docker hub
+      - name: "docker login"
         if: github.event_name != 'pull_request'
         # https://github.com/docker/login-action/
-        uses: docker/login-action@v4
+        uses: "docker/login-action@v4"
         with:
           registry: "${{env.REGISTRY}}"
           username: "${{github.repository_owner}}"
           password: "${{github.token}}"
 
-      - uses: actions/checkout@v7
+      - uses: "actions/checkout@v7"
         with:
           fetch-depth: 0
 
-      - name: generate docker metadata
-        id: meta
+      - name: "metadata"
+        id: "meta"
         # https://github.com/docker/metadata-action/
-        uses: docker/metadata-action@v6
+        uses: "docker/metadata-action@v6"
         with:
           # list of Docker images to use as base name for tags
           images: |
@@ -58,15 +57,15 @@ jobs:
             type=semver,pattern=${{env.VERSION}}
             type=sha
 
-      - name: build docker image and, if not PR, push
+      - name: "build"
         # https://github.com/docker/build-push-action/
-        uses: docker/build-push-action@v7
+        uses: "docker/build-push-action@v7"
         with:
-          file: ./Dockerfile
-          context: .
+          file: "Dockerfile"
+          context: "."
           platforms: "linux/amd64,linux/arm64"
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{env.REGISTRY}}/${{github.repository}}:${{env.VERSION}}"
+          labels: "${{ steps.meta.outputs.labels }}"
           
           
-          labels: ${{ steps.meta.outputs.labels }}
